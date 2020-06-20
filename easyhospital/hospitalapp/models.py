@@ -39,7 +39,7 @@ class Hospital(models.Model):
         qs = Hospital.objects.all() \
             .annotate(distance=distance_raw_sql).order_by('distance')
         qs = qs.filter(accepting_covid_patients=True)
-        qs = qs.queryset.filter(empty_covid_beds__gt=0)
+        qs = qs.filter(empty_covid_beds__gt=0)
 
         if max_distance is not None:
             qs = qs.filter(distance__lt=max_distance)
@@ -63,7 +63,7 @@ class Hospital(models.Model):
         qs = Hospital.objects.all() \
             .annotate(distance=distance_raw_sql).order_by('distance')
         qs = qs.filter(covid_exclusive=False)
-        qs = qs.queryset.filter(empty_beds__gt=0)
+        qs = qs.filter(empty_beds__gt=0)
 
         if max_distance is not None:
             qs = qs.filter(distance__lt=max_distance)
