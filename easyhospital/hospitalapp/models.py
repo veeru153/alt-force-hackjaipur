@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.expressions import RawSQL
 # from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
 
@@ -19,6 +20,54 @@ class Hospital(models.Model):
     covid_patients = models.IntegerField(default=0)
     empty_covid_beds = models.IntegerField(default=0)
     last_updated = models.TimeField(auto_now=True)
+
+    def get_covid_locations_nearby_coords(latitude, longitude, max_distance=None):
+        """
+        Return objects sorted by distance to specified coordinates
+        which distance is less than max_distance given in kilometers
+        """
+        # Great circle distance formula
+        gcd_formula = "6371 * acos(least(greatest(\
+        cos(radians(%s)) * cos(radians(latitude)) \
+        * cos(radians(longitude) - radians(%s)) + \
+        sin(radians(%s)) * sin(radians(latitude)) \
+        , -1), 1))"
+        distance_raw_sql = RawSQL(
+            gcd_formula,
+            (latitude, longitude, latitude)
+        )
+        qs = Hospital.objects.all() \
+            .annotate(distance=distance_raw_sql).order_by('distance')
+        qs = qs.filter(accepting_covid_patients=True)
+        qs = qs.queryset.filter(empty_covid_beds__gt=0)
+
+        if max_distance is not None:
+            qs = qs.filter(distance__lt=max_distance)
+        return qs
+
+    def get_noncovid_locations_nearby_coords(latitude, longitude, max_distance=None):
+        """
+        Return objects sorted by distance to specified coordinates
+        which distance is less than max_distance given in kilometers
+        """
+        # Great circle distance formula
+        gcd_formula = "6371 * acos(least(greatest(\
+        cos(radians(%s)) * cos(radians(latitude)) \
+        * cos(radians(longitude) - radians(%s)) + \
+        sin(radians(%s)) * sin(radians(latitude)) \
+        , -1), 1))"
+        distance_raw_sql = RawSQL(
+            gcd_formula,
+            (latitude, longitude, latitude)
+        )
+        qs = Hospital.objects.all() \
+            .annotate(distance=distance_raw_sql).order_by('distance')
+        qs = qs.filter(covid_exclusive=False)
+        qs = qs.queryset.filter(empty_beds__gt=0)
+
+        if max_distance is not None:
+            qs = qs.filter(distance__lt=max_distance)
+        return qs
 
     def __str__(self):
         return self.hospital_name

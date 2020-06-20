@@ -13,6 +13,13 @@ import jwt
 from django.http import JsonResponse
 
 
+# def distance(lat, long, lati, longi):
+#    lat = float(lat)
+#    long = float(long)
+#    custom_distance = ((((lat - lati) ** 2) + ((long - longi) ** 2)) ** 0.5)
+#    return custom_distance
+
+
 class HospitalViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Hospitals to be viewed or edited.
@@ -25,18 +32,22 @@ class HospitalViewSet(viewsets.ModelViewSet):
         queryset = Hospital.objects.all().order_by('id')
         covid = self.request.query_params.get('covid')
         covid1 = str(covid).lower()
-        latitude = self.request.query_params.get('lat')
-        longitude = self.request.query_params.get('long')
+        latitude1 = self.request.query_params.get('lat')
+        longitude1 = self.request.query_params.get('long')
 
         if covid1 == 'yes':
             queryset = queryset.filter(accepting_covid_patients=True)
             queryset = queryset.filter(empty_covid_beds__gt=0)  # covid beds > 0
-            if latitude:
-                if longitude:
-                    queryset = queryset.annotate(custom_distance=(((("latitude" - latitude) ** 2) + (("longitude" - longitude) ** 2)) ** 0.5)).order_by(custom_distance)
+            if latitude1:
+                if longitude1:
+                    queryset = Hospital.get_covid_locations_nearby_coords(latitude1, longitude1)
+                # Hospital.objects.annotate(distance("latitude", "longitude", latitude1, longitude1)).order_by(distance)
         elif covid1 == 'no':
             queryset = queryset.filter(covid_exclusive=False)
             queryset = queryset.filter(empty_beds__gt=0)
+            if latitude1:
+                if longitude1:
+                    queryset = Hospital.get_noncovid_locations_nearby_coords(latitude1, longitude1)
         return queryset
 
 
