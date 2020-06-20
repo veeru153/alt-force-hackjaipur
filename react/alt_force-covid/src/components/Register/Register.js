@@ -4,11 +4,17 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import CustomBtn from '../UI/CustomBtn/CustomBtn'
 import { withRouter } from 'react-router-dom';
+import auth0 from 'auth0-js';
 
 
 import styles from './Register.module.css'
 
-// Setup redirect
+const webAuth = new auth0.WebAuth({
+    clientID: 'X6vuD8AiLJrjU2r2M5gomQARWvZKdycL',
+    domain: 'alt-force.us.auth0.com',
+    redirectUri: 'http://localhost:3000',
+    responseType: 'token id_token'
+});
 
 const RegistrationSchema = yup.object({
     name: yup.string().required(),
@@ -19,7 +25,8 @@ const RegistrationSchema = yup.object({
 })
 
 const Register = (props) => {
-    const store = useSelector(state => state)
+    document.title = "Register | Alt-Force COVID-19";
+    const store = useSelector(state => state);
     const dispatch = useDispatch();
     const initValues = {
         name: store.name,
@@ -35,11 +42,34 @@ const Register = (props) => {
                 initialValues={initValues}
                 validationSchema={RegistrationSchema}
                 onSubmit={async (values, actions) => {
-                    // let currCoords = new Array(2);
-                    navigator.geolocation.getCurrentPosition( (pos) => {
-                        dispatch({ type: 'INIT_DASHBOARD', hospital: values, coords: [pos.coords.latitude, pos.coords.longitude]})
-                        props.history.push("/dashboard");
+                    let tempCoords = [];
+                    await navigator.geolocation.getCurrentPosition((pos) => {
+                        let newState = {
+                            ...store,
+                            name: values.name,
+                            email: values.email,
+                            govtHospital: values.govtHospital,
+                            ambulance: values.ambulance,
+                            covidExclusive: values.covidExclusive,
+                            coords: [pos.coords.latitude, pos.coords.longitude]
+                        }
+                        dispatch({ type: 'TEMP_STORE', store: newState });
+
+                        webAuth.passwordlessStart({
+                            connection: 'email',
+                            send: 'code',
+                            email: values.email
+                        }, (err, res) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(res);
+                                localStorage.setItem('hospital', JSON.stringify(newState));
+                                props.history.push("/verify");
+                            }
+                        });
                     })
+                    console.log(tempCoords);
                 }}
             >
                 {(props) => (
@@ -50,7 +80,7 @@ const Register = (props) => {
                         </div>
                         <div className={styles.formInputContainer}>
                             <label>Name: </label>
-                            <input 
+                            <input
                                 name="name"
                                 type="text"
                                 placeholder="Hospital Name"
@@ -62,7 +92,7 @@ const Register = (props) => {
 
                         <div className={styles.formInputContainer}>
                             <label>Email: </label>
-                            <input 
+                            <input
                                 name="email"
                                 type="email"
                                 placeholder="Email ID"
@@ -70,13 +100,13 @@ const Register = (props) => {
                                 onChange={props.handleChange('email')}
                                 value={props.values.email}
                             />
-                        </div> 
+                        </div>
 
                         <div className={styles.checkboxContainer}>
                             <div className={styles.checkboxInputs}>
                                 <label className={styles.checkboxLabel}>Government Hospital?</label>
                                 <label className={styles.switch}>
-                                    <input 
+                                    <input
                                         name="govtHospital"
                                         type="checkbox"
                                         checked={props.values.govtHospital}
@@ -86,11 +116,11 @@ const Register = (props) => {
                                     <span className={[styles.slider, styles.round].join(' ')}></span>
                                 </label>
                             </div>
-                            
+
                             <div className={styles.checkboxInputs}>
                                 <label className={styles.checkboxLabel}>COVID-19 Exclusive?</label>
                                 <label className={styles.switch}>
-                                    <input 
+                                    <input
                                         name="covidExclusive"
                                         type="checkbox"
                                         checked={props.values.covidExclusive}
@@ -104,7 +134,7 @@ const Register = (props) => {
                             <div className={styles.checkboxInputs}>
                                 <label className={styles.checkboxLabel}>Ambulance Facility?</label>
                                 <label className={styles.switch}>
-                                    <input 
+                                    <input
                                         name="ambulance"
                                         type="checkbox"
                                         checked={props.values.ambulance}
@@ -115,7 +145,7 @@ const Register = (props) => {
                                 </label>
                             </div>
                         </div>
-                        <CustomBtn title="NEXT" bgColor="#25CEDE" click={props.submitForm}/>
+                        <CustomBtn title="NEXT" bgColor="#25CEDE" click={props.submitForm} />
                     </form>
                 )}
 

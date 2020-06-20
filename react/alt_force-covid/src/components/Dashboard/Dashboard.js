@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CovidBeds, CovidPatients, EmptyBeds, EmptyVentilators } from '../Cards/Cards';
 import SwitchBtn from '../UI/SwitchBtn/SwitchBtn';
@@ -7,12 +7,21 @@ import { withRouter } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 
 const Dashboard = (props) => {
-    const store = useSelector(state => state)
-    const dispatch = useDispatch();
+    if(localStorage.getItem('hospital') == null) {
+        props.history.push('/register');
+    } 
 
-    if(!store.registered) {
-        props.history.push("/")
-    }
+    document.title = "Dashboard | Alt-Force COVID-19";
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if(localStorage.getItem('hospital')) {
+            return dispatch({ type: 'INIT_DASHBOARD', store: JSON.parse(localStorage.getItem('hospital'))})
+            // return store = JSON.parse(localStorage.getItem('hospital'));
+        }
+    }, []);
+    const store = useSelector(state => state)
+
+
 
     const [accepting, setAccepting] = useState( store.data.accepting );
     console.log(store);

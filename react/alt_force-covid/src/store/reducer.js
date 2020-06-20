@@ -45,20 +45,16 @@ const reducer = (state = initState, actions) => {
                 },
             }
         
+        case 'TEMP_STORE':
+            return {
+                ...actions.store,
+                lastUpdated: updateTime
+            }
+
         case 'INIT_DASHBOARD':
             return {
-                ...state,
-                registered: true,
-                name: actions.hospital.name,
-                email: actions.hospital.email,
-                govtHospital: actions.hospital.govtHospital,
-                ambulance: actions.hospital.ambulance,
-                covidExclusive: actions.hospital.covidExclusive,
-                coords: actions.coords,
-                data: {
-                    ...state.data,
-                    lastUpdated: updateTime
-                }
+                ...actions.store,
+                lastUpdated: updateTime
             }
 
         default:
