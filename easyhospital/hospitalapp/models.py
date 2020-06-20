@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Hospital(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
     # location = Point(srid=4326)
+    id = models.CharField(max_length=100, primary_key=True)
     hospital_name = models.CharField(max_length=100, default='No Name Provided')
     email = models.EmailField(max_length=100, default='exampleblabla@mail.com', unique=True)
     latitude = models.DecimalField(max_digits=22, decimal_places=16)
