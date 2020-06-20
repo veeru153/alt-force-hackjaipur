@@ -1,1 +1,1 @@
-web: gunicorn aysbasic.wsgi --log-file -
+web: gunicorn easyhospital.wsgi --log-file -

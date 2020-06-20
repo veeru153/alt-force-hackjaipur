@@ -11,7 +11,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all().order_by('email')
+    queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -20,7 +20,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Patients to be viewed or edited.
     """
-    queryset = Patient.objects.all().order_by('user_id')
+    queryset = Patient.objects.all().order_by('id')
     serializer_class = PatientSerializer
     permission_classes = [permissions.AllowAny]
 
