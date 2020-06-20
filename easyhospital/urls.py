@@ -21,8 +21,6 @@ from django.views.generic import TemplateView
 
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'patient', views.PatientViewSet)
 router.register(r'hospital', views.HospitalViewSet, basename="hospital")
 
 
