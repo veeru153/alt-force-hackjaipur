@@ -31,9 +31,9 @@ class HospitalViewSet(viewsets.ModelViewSet):
         if covid1 == 'yes':
             queryset = queryset.filter(accepting_covid_patients=True)
             queryset = queryset.filter(empty_covid_beds__gt=0)  # covid beds > 0
-            # if latitude:
-            #    if longitude:
-             #       queryset = queryset.
+            if latitude:
+                if longitude:
+                    queryset = queryset.annotate(custom_distance=(((("latitude" - latitude) ** 2) + (("longitude" - longitude) ** 2)) ** 0.5)).order_by(custom_distance)
         elif covid1 == 'no':
             queryset = queryset.filter(covid_exclusive=False)
             queryset = queryset.filter(empty_beds__gt=0)
