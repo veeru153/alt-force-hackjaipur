@@ -23,7 +23,7 @@ from django.views.generic import TemplateView
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'patient', views.PatientViewSet)
-router.register(r'hospital', views.HospitalViewSet)
+router.register(r'hospital', views.HospitalViewSet, basename="hospital")
 
 
 # Wire up our API using automatic URL routing.
