@@ -1,4 +1,5 @@
 from django.db import models
+# from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
 
 
@@ -13,6 +14,7 @@ class Patient(models.Model):
 
 class Hospital(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # location = Point(srid=4326)
     latitude = models.DecimalField(max_digits=22, decimal_places=16)
     longitude = models.DecimalField(max_digits=22, decimal_places=16)
     government_hospital = models.BooleanField(default=False)
