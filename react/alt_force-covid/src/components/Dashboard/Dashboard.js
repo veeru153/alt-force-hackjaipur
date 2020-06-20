@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CovidBeds, CovidPatients, EmptyBeds, EmptyVentilators } from '../Cards/Cards';
-// import SwitchBtn from '../UI/SwitchBtn/SwitchBtn';
 import SwitchBtn from '../UI/SwitchBtn/SwitchBtn';
 
 import styles from './Dashboard.module.css';

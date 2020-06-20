@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from './Card';
 
 const EmptyBeds = (props) => {
-    const [beds, setBeds] = useState(0);
+    const store = useSelector(state => state);
+    const [beds, setBeds] = useState( store.data.emptyBeds );
 
     const handleChange = (val) => {
         if(val == "") {
@@ -13,7 +15,12 @@ const EmptyBeds = (props) => {
     }
     
     return (
-        <Card title="Empty Beds" value={beds} changeVal={(val) => handleChange(val)}/>
+        <Card 
+            title="Empty Beds" 
+            valType="emptyBeds"
+            value={beds} 
+            changeVal={(val) => handleChange(val)}
+        />
     )
 }
 

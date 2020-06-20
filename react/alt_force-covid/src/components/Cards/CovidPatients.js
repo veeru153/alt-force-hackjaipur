@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from './Card';
 
 const CovidPatients = (props) => {
-    const [covidPatients, setCovidPatients] = useState(0);
+    const store = useSelector(state => state);
+    const [covidPatients, setCovidPatients] = useState( store.data.covidPatients );
 
     const handleChange = (val) => {
         if(val == "") {
@@ -13,7 +15,12 @@ const CovidPatients = (props) => {
     }
 
     return (
-        <Card title="COVID-19 Patients" value={covidPatients} changeVal={(val) => handleChange(val)} />
+        <Card 
+            title="COVID-19 Patients" 
+            valType="covidPatients"
+            value={covidPatients} 
+            changeVal={(val) => handleChange(val)} 
+        />
     )
 }
 
