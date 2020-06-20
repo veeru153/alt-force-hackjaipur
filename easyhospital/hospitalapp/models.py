@@ -7,7 +7,7 @@ class Hospital(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
     # location = Point(srid=4326)
     hospital_name = models.CharField(max_length=100, default='No Name Provided')
-    email = models.EmailField(max_length=100, default='example@mail.com')
+    email = models.EmailField(max_length=100, default='example@mail.com', unique=True)
     latitude = models.DecimalField(max_digits=22, decimal_places=16)
     longitude = models.DecimalField(max_digits=22, decimal_places=16)
     government_hospital = models.BooleanField(default=False)
