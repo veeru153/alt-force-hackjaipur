@@ -4,7 +4,7 @@ import styles from './CustomBtn.module.css';
 
 const CustomBtn = (props) => {
     const btnColor = {
-        backgroundColor: props.bgColor
+        backgroundColor: props.bgColor,
     }
 
     return (

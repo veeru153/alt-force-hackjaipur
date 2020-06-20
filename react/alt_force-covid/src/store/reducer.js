@@ -1,4 +1,5 @@
 const initState = {
+    registered: false,
     name: "",
     email: "",
     coords: "",
@@ -16,6 +17,13 @@ const initState = {
 }
 
 const reducer = (state = initState, actions) => {
+    const d = new Date();
+    let hr = d.getHours() <= 9 ? `0${d.getHours()}` : d.getHours();
+    let min = d.getMinutes() <= 9 ? `0${d.getMinutes()}` : d.getMinutes();
+    let timeLabel = d.getHours() < 12 ? "AM" : "PM";
+    let updateTime = `at ${hr}:${min}${timeLabel}`;
+    // let updateTime = `at ${hr}:${min}${timeLabel}, ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
     switch(actions.type) {
         case 'UPDATE_VALUE':
             return {
@@ -23,7 +31,7 @@ const reducer = (state = initState, actions) => {
                 data: {
                     ...state.data,
                     [actions.valType]: actions.value,
-                    lastUpdated: actions.time
+                    lastUpdated: updateTime
                 }
             }
         
@@ -33,19 +41,24 @@ const reducer = (state = initState, actions) => {
                 data: {
                     ...state.data,
                     [actions.toggleLabel]: actions.toggleResult,
-                    lastUpdated: actions.time
+                    lastUpdated: updateTime
                 },
             }
         
         case 'INIT_DASHBOARD':
             return {
                 ...state,
+                registered: true,
                 name: actions.hospital.name,
                 email: actions.hospital.email,
                 govtHospital: actions.hospital.govtHospital,
                 ambulance: actions.hospital.ambulance,
                 covidExclusive: actions.hospital.covidExclusive,
                 coords: actions.coords,
+                data: {
+                    ...state.data,
+                    lastUpdated: updateTime
+                }
             }
 
         default:

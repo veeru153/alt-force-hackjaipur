@@ -11,12 +11,7 @@ const Card = (props) => {
 
     const handleClick = () => {
         if(update == true) {
-            const d = new Date();
-            let hr = d.getHours() <= 9 ? `0${d.getHours()}` : d.getHours();
-            let min = d.getMinutes() <= 9 ? `0${d.getMinutes()}` : d.getMinutes();
-            let timeLabel = d.getHours() < 12 ? "AM" : "PM";
-            let updateTime = `at ${hr}:${min}${timeLabel}`;
-            dispatch({ type: 'UPDATE_VALUE', valType: props.valType, value: props.value, time: updateTime });
+            dispatch({ type: 'UPDATE_VALUE', valType: props.valType, value: props.value });
         }
         setUpdate(!update);
     }
@@ -36,7 +31,7 @@ const Card = (props) => {
             </div>
             {
                 update ? 
-                <CustomBtn title="SAVE" bgColor="#25CEDE" click={handleClick}/> :
+                <CustomBtn title="CONFIRM" bgColor="#FA6E64" click={handleClick}/> :
                 <CustomBtn title="UPDATE" bgColor="#25CEDE" click={handleClick}/>
             }
         </div>
