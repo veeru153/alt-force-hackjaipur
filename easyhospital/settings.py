@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_extensions',
     'rest_framework_jwt'
+    'auth_jwt',
     # 'django.contrib.gis',
 ]
 
