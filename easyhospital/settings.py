@@ -165,9 +165,9 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-        'hospitalapp.utils.jwt_get_username_from_payload_handler',
+        'easyhospital.hospitalapp.utils.jwt_get_username_from_payload_handler',
     'JWT_DECODE_HANDLER':
-        'hospitalapp.utils.jwt_decode_token',
+        'easyhospital.hospitalapp.utils.jwt_decode_token',
     'JWT_ALGORITHM': 'RS256',
     'JWT_AUDIENCE': 'https://alt-force/api',
     'JWT_ISSUER': 'https://alt-force.us.auth0.com/',
