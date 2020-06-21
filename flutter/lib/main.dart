@@ -127,7 +127,7 @@ void _showAlertMessage(
 
   var alert = new AlertDialog(
     title: new Text(
-      'HCQS',
+      'Hospital Details',
       textAlign: TextAlign.center,
     ),
     content: new Text(message),
