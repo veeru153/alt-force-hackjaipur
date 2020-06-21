@@ -11,7 +11,6 @@ List _covid;
 List _nonCovid;
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   _data = await getAllHospital();
@@ -22,15 +21,13 @@ void main() async {
   print(_covid.length);
   print(_nonCovid.length);
 
-
-
   runApp(new MaterialApp(
     title: 'EasyHospital',
     home: new hospital(),
   ));
 }
 
-//main screen
+//main screen landing page
 class hospital extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,11 +35,11 @@ class hospital extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('EasyHospital'),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color(0xff3ebbdd),
       ),
       body: new Column(
         children: <Widget>[
-          new Padding(padding: EdgeInsets.all(15.0)),
+          new Padding(padding: EdgeInsets.all(155.0)),
           new Text(
             'Choose your preference',
             style: new TextStyle(fontSize: 15.0),
@@ -52,13 +49,12 @@ class hospital extends StatelessWidget {
             children: <Widget>[
               new MaterialButton(
                 onPressed: () {
-//                                    _getCurrentLocationCovid();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => covidHospitals()),
                   );
                 },
-                color: Colors.redAccent,
+                color: Color(0xff22a1a8),
                 child: new Text(
                   'Covid hospitals',
                   style: new TextStyle(color: Colors.white),
@@ -74,7 +70,7 @@ class hospital extends StatelessWidget {
                         builder: (context) => noncovidHospitals()),
                   );
                 },
-                color: Colors.greenAccent.shade700,
+                color: Color(0xff25cede),
                 child: new Text(
                   'Non-Covid hospitals',
                   style: new TextStyle(color: Colors.white),
@@ -83,36 +79,37 @@ class hospital extends StatelessWidget {
             ],
           ),
           new Padding(padding: EdgeInsets.all(15.0)),
-          new Expanded(
-              child: new ListView.builder(
-            itemCount: _data.length,
-            padding: const EdgeInsets.all(5.0),
-            itemBuilder: (BuildContext context, int position) {
-//                                if (position.isOdd) return new Divider();
-              final index = position;
-              return new ListTile(
-                title: new Text(
-                  "${_data[index]['hospital_name']}",
-                  style: new TextStyle(
-                      fontSize: 15.5,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w500),
-                ),
-                subtitle: new Text(
-                    'Accepting Covid patient: ${_data[index]['accepting_covid_patients']}\n'
-                    'Empty beds: ${_data[index]['empty_beds']}\n'
-                    'Empty Covid beds: ${_data[index]['empty_covid_beds']}\n'
-                    'Empty Ventilators: ${_data[index]['empty_ventilators']}\n'),
-                onTap: () {
-                  _showAlertMessage(
-                      context,
-                      "${_data[index]['email']}",
-                      "${_data[index]['latitude']}",
-                      "${_data[index]['longitude']}");
-                },
-              );
-            },
-          ))
+//          new Expanded(
+//              child: new ListView.builder(
+//            itemCount: _data.length,
+//            padding: const EdgeInsets.all(5.0),
+//            itemBuilder: (BuildContext context, int position) {
+////                                if (position.isOdd) return new Divider();
+//              final index = position;
+//              return new ListTile(
+//                title: new Text(
+//                  "${_data[index]['hospital_name']}",
+//                  style: new TextStyle(
+//                      fontSize: 15.5,
+//                      color: Colors.redAccent,
+//                      fontWeight: FontWeight.w500),
+//                ),
+//                subtitle: new Text(
+//                    'Accepting Covid patient: ${_data[index]['accepting_covid_patients']}\n'
+//                    'Empty beds: ${_data[index]['empty_beds']}\n'
+//                    'Empty Covid beds: ${_data[index]['empty_covid_beds']}\n'
+//                    'Empty Ventilators: ${_data[index]['empty_ventilators']}\n'),
+//                onTap: () {
+//                  _showAlertMessage(
+//                      context,
+//                      "${_data[index]['email']}",
+//                      "${_data[index]['latitude']}",
+//                      "${_data[index]['longitude']}");
+//                },
+//              );
+//            },
+//          )
+//          )
         ],
       ),
     );
@@ -179,7 +176,7 @@ Future<List> getCovidHospital() async {
   final position = await Geolocator()
       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   String apiUrl =
-        'https://alt-force-hack-jaipur.herokuapp.com/api/hospital/?covid=yes&format=json&lat=${position.latitude}&long=${position.longitude}';
+      'https://alt-force-hack-jaipur.herokuapp.com/api/hospital/?covid=yes&format=json&lat=${position.latitude}&long=${position.longitude}';
 //      'https://alt-force-hack-jaipur.herokuapp.com/api/hospital/?covid=yes&format=json&lat=0.0&long=0.0';
 
   http.Response response = await http.get(apiUrl);
@@ -191,7 +188,7 @@ Future<List> getNonCovidHospital() async {
   final position = await Geolocator()
       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   String apiUrl =
-        'https://alt-force-hack-jaipur.herokuapp.com/api/hospital/?covid=no&format=json&lat=${position.latitude}&long=${position.longitude}';
+      'https://alt-force-hack-jaipur.herokuapp.com/api/hospital/?covid=no&format=json&lat=${position.latitude}&long=${position.longitude}';
 //      'https://alt-force-hack-jaipur.herokuapp.com/api/hospital/?covid=no&format=json&lat=0.0&long=0.0';
   http.Response response = await http.get(apiUrl);
   return jsonDecode(response.body);
@@ -234,7 +231,7 @@ class covidHospitals extends StatelessWidget {
       appBar: AppBar(
         title: Text("Covid Hospitals"),
         centerTitle: true,
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Color(0xff22a1a8),
       ),
       body: new Column(
         children: <Widget>[
@@ -290,7 +287,7 @@ class noncovidHospitals extends StatelessWidget {
       appBar: AppBar(
         title: Text("Non-Covid Hospitals"),
         centerTitle: true,
-        backgroundColor: Colors.greenAccent.shade700,
+        backgroundColor: Color(0xff25cede),
       ),
       body: new Column(
         children: <Widget>[
