@@ -75,7 +75,7 @@ const Register = (props) => {
                 {(props) => (
                     <form onSubmit={props.handleSubmit} className={styles.formContainer}>
                         <div className={styles.formHeader}>
-                            <p>Alt-Force COVID-19 Dashboard</p>
+                            <p>Alt-Force COVID-19 EasyHospital Dashboard</p>
                             <p>Register</p>
                         </div>
                         <div className={styles.formInputContainer}>
