@@ -13,7 +13,8 @@ const webAuth = new auth0.WebAuth({
     clientID: 'X6vuD8AiLJrjU2r2M5gomQARWvZKdycL',
     domain: 'alt-force.us.auth0.com',
     redirectUri: 'http://localhost:3000',
-    responseType: 'token id_token'
+    responseType: 'token id_token',
+    audience: 'https://alt-force/api'
 });
 
 const OTPSchema = yup.object({

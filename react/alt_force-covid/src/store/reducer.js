@@ -1,5 +1,5 @@
 const initState = {
-    registered: false,
+    id: "",
     name: "",
     email: "",
     coords: "",
@@ -54,6 +54,7 @@ const reducer = (state = initState, actions) => {
         case 'INIT_DASHBOARD':
             return {
                 ...actions.store,
+                id: actions.id,
                 lastUpdated: updateTime
             }
 

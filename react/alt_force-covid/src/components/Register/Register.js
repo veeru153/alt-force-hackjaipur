@@ -8,12 +8,14 @@ import auth0 from 'auth0-js';
 
 
 import styles from './Register.module.css'
+import axios from 'axios';
 
 const webAuth = new auth0.WebAuth({
     clientID: 'X6vuD8AiLJrjU2r2M5gomQARWvZKdycL',
     domain: 'alt-force.us.auth0.com',
     redirectUri: 'http://localhost:3000',
-    responseType: 'token id_token'
+    responseType: 'token id_token',
+    audience: 'https://alt-force/api'
 });
 
 const RegistrationSchema = yup.object({
@@ -41,9 +43,8 @@ const Register = (props) => {
             <Formik
                 initialValues={initValues}
                 validationSchema={RegistrationSchema}
-                onSubmit={async (values, actions) => {
-                    let tempCoords = [];
-                    await navigator.geolocation.getCurrentPosition((pos) => {
+                onSubmit={ async (values, actions) => {
+                    navigator.geolocation.getCurrentPosition((pos) => {
                         let newState = {
                             ...store,
                             name: values.name,
@@ -64,12 +65,11 @@ const Register = (props) => {
                                 console.log(err);
                             } else {
                                 console.log(res);
-                                localStorage.setItem('hospital', JSON.stringify(newState));
+                                localStorage.setItem('altForce_hospital', JSON.stringify(newState));
                                 props.history.push("/verify");
                             }
                         });
                     })
-                    console.log(tempCoords);
                 }}
             >
                 {(props) => (

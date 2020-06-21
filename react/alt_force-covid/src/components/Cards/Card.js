@@ -3,15 +3,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import CustomBtn from '../UI/CustomBtn/CustomBtn';
 
 import styles from './Card.module.css';
+import axios from 'axios';
 
 const Card = (props) => {
     const store = useSelector(state => state);
     const dispatch = useDispatch();
     const [update, setUpdate] = useState(false);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if(update == true) {
             dispatch({ type: 'UPDATE_VALUE', valType: props.valType, value: props.value });
+            
+            let res = await axios.patch(`http://alt-force-hack-jaipur.herokuapp.com/api/hospital/${localStorage.getItem('altForce_hId')}/?format=json`, {
+                "empty_beds": store.data.emptyBeds,
+                "empty_ventilators": store.data.emptyVentilators,
+                "covid_patients": store.data.covidPatients,
+                "empty_covid_beds": store.data.covidBeds,
+                "last_updated": store.data.lastUpdated
+            })
         }
         setUpdate(!update);
     }
