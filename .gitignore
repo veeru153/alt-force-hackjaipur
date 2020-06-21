@@ -1,1 +1,3 @@
 .DS_Store
+react/alt_force-covid/node_modules/
+*.rest
